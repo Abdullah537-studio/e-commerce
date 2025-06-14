@@ -5,6 +5,6 @@ class OrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text("order page"));
+    return Center(child: Text("order page"));
   }
 }

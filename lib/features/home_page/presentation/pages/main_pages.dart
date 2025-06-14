@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/core/constant/app_colors.dart';
 import 'package:e_commerce_app/core/enum/bottom_nav_item.dart';
+import 'package:e_commerce_app/core/general_cubit/cubits/bottom_nav/bottom_nav_cubit.dart';
 import 'package:e_commerce_app/core/strings/images_strings.dart';
 import 'package:e_commerce_app/core/widgets/main_scaffold.dart';
 import 'package:e_commerce_app/features/home_page/presentation/pages/home_page.dart';
@@ -7,6 +8,7 @@ import 'package:e_commerce_app/features/home_page/presentation/pages/notificatio
 import 'package:e_commerce_app/features/home_page/presentation/pages/order_page.dart';
 import 'package:e_commerce_app/features/home_page/presentation/pages/setting_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -15,119 +17,66 @@ class MainPages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BottomNavItem bottomNabItem = BottomNavItem.HomePage;
-    Widget? page = HomePage();
-    switch (bottomNabItem) {
-      case BottomNavItem.HomePage:
-        page = HomePage();
+    return BlocProvider(
+      create: (context) => BottomNavCubit(),
+      child: BlocBuilder<BottomNavCubit, BottomNavItem>(
+        builder: (context, selectedTab) {
+          return MainScaffold(
+            body: bodyFor(selectedTab),
 
-      case BottomNavItem.Notification:
-        page = NotificationPage();
-
-      case BottomNavItem.Order:
-        page = OrderPage();
-
-      case BottomNavItem.Setting:
-        page = SettingPage();
-    }
-
-    return MainScaffold(
-      body: page,
-      bottomNavigationBar: SizedBox(
-        width: double.infinity,
-        height: 80.h,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            GestureDetector(
-              onTap: () {
-                bottomNabItem = BottomNavItem.HomePage;
-              },
-              child: SvgPicture.asset(ImagesStrings.homeSvg),
+            bottomNavigationBar: SizedBox(
+              width: double.infinity,
+              height: 80.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: BottomNavItem.values.map((item) {
+                  final asset = _assetFor(item);
+                  final isSelected = item == selectedTab;
+                  final color = isSelected
+                      ? AppColors.primaryColor
+                      : Colors.black;
+                  return GestureDetector(
+                    onTap: () => context.read<BottomNavCubit>().selectTab(item),
+                    child: SvgPicture.asset(
+                      asset,
+                      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
-            GestureDetector(
-              onTap: () {
-                bottomNabItem = BottomNavItem.Notification;
-              },
-              child: SvgPicture.asset(ImagesStrings.notificationSvg),
-            ),
-            GestureDetector(
-              onTap: () {
-                bottomNabItem = BottomNavItem.Order;
-              },
-              child: SvgPicture.asset(ImagesStrings.orderSvg),
-            ),
-            GestureDetector(
-              onTap: () {
-                bottomNabItem = BottomNavItem.Setting;
-              },
-              child: SvgPicture.asset(ImagesStrings.settingSvg),
-            ),
-          ],
-        ),
+          );
+        },
       ),
-      //  BottomNavigationBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: (i) => setState(() => _currentIndex = i),
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Tab(
-      //         child: SvgPicture.asset(
-      //           ImagesStrings.homeSvg,
-      //           colorFilter: ColorFilter.mode(
-      //             _currentIndex == 0
-      //                 ? AppColors.primaryColor
-      //                 : Colors.black, // اللون اللي تبيه
-      //             BlendMode.srcIn, // نمط الدمج
-      //           ),
-      //         ),
-      //       ),
-      //       label: "home page",
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Tab(
-      //         child: SvgPicture.asset(
-      //           ImagesStrings.notificationSvg,
-      //           colorFilter: ColorFilter.mode(
-      //             _currentIndex == 1
-      //                 ? AppColors.primaryColor
-      //                 : Colors.black, // اللون اللي تبيه
-      //             BlendMode.srcIn, // نمط الدمج
-      //           ),
-      //         ),
-      //       ),
-      //       label: "Notification page",
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Tab(
-      //         child: SvgPicture.asset(
-      //           ImagesStrings.orderSvg,
-      //           colorFilter: ColorFilter.mode(
-      //             _currentIndex == 2
-      //                 ? AppColors.primaryColor
-      //                 : Colors.black, // اللون اللي تبيه
-      //             BlendMode.srcIn, // نمط الدمج
-      //           ),
-      //         ),
-      //       ),
-      //       label: "order page",
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Tab(
-      //         child: SvgPicture.asset(
-      //           ImagesStrings.settingSvg,
-      //           colorFilter: ColorFilter.mode(
-      //             _currentIndex == 3
-      //                 ? AppColors.primaryColor
-      //                 : Colors.black, // اللون اللي تبيه
-      //             BlendMode.srcIn, // نمط الدمج
-      //           ),
-      //         ),
-      //       ),
-      //       label: "setting page",
-      //     ),
-      //   ],
-      // ),
     );
+  }
+
+  Widget bodyFor(BottomNavItem item) {
+    switch (item) {
+      case BottomNavItem.homePage:
+        return HomePage();
+
+      case BottomNavItem.notification:
+        return NotificationPage();
+
+      case BottomNavItem.order:
+        return OrderPage();
+
+      case BottomNavItem.setting:
+        return SettingPage();
+    }
+  }
+
+  String _assetFor(BottomNavItem item) {
+    switch (item) {
+      case BottomNavItem.homePage:
+        return ImagesStrings.homeSvg;
+      case BottomNavItem.notification:
+        return ImagesStrings.notificationSvg;
+      case BottomNavItem.order:
+        return ImagesStrings.orderSvg;
+      case BottomNavItem.setting:
+        return ImagesStrings.settingSvg;
+    }
   }
 }

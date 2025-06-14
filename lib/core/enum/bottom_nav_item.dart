@@ -1,1 +1,1 @@
-enum BottomNavItem { HomePage, Notification, Order, Setting }
+enum BottomNavItem { homePage, notification, order, setting }

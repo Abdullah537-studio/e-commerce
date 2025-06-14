@@ -1,4 +1,3 @@
-import 'package:e_commerce_app/features/home_page/presentation/pages/home_page.dart';
 import 'package:e_commerce_app/features/home_page/presentation/pages/main_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
