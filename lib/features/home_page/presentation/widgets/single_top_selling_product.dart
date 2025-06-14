@@ -19,31 +19,45 @@ class SingleTopSellingProduct extends StatelessWidget {
   final Function()? onTapFavorite;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          color: AppColors.greyColor,
-          child: Column(
-            spacing: 8.h,
-            children: [
-              SizedBox(height: 220.h, child: Image.asset(image)),
-              MainTextWidget(text: text),
-              MainTextWidget(
-                text: "\$ $price",
-                styleType: TextStyleType.bodyLarge,
-              ),
-            ],
+    return Padding(
+      padding: EdgeInsets.only(right: 16.w),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.greyColor,
+
+              border: Border.all(color: Colors.transparent),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Column(
+              spacing: 8.h,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 159.w,
+                  height: 281.h,
+                  child: Image.asset(image),
+                ),
+                MainTextWidget(text: text),
+                MainTextWidget(
+                  textAlign: TextAlign.left,
+                  text: "\$ $price",
+                  styleType: TextStyleType.bodyLarge,
+                ),
+              ],
+            ),
           ),
-        ),
-        Positioned(
-          top: 10.h,
-          right: 12.w,
-          child: GestureDetector(
-            onTap: onTapFavorite,
-            child: SvgPicture.asset(ImagesStrings.favoriteSvg),
+          Positioned(
+            top: 10.h,
+            right: 12.w,
+            child: GestureDetector(
+              onTap: onTapFavorite,
+              child: SvgPicture.asset(ImagesStrings.favoriteSvg),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

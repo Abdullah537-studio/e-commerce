@@ -9,7 +9,7 @@ class MainScaffold extends StatelessWidget {
   final bool showBackButton;
   final Color? backgroundColor;
   final PreferredSizeWidget? bottom;
-
+  final Widget? bottomNavigationBar;
   const MainScaffold({
     super.key,
     required this.body,
@@ -19,6 +19,7 @@ class MainScaffold extends StatelessWidget {
     this.showBackButton = true,
     this.backgroundColor,
     this.bottom,
+    this.bottomNavigationBar,
   });
 
   @override
@@ -40,6 +41,7 @@ class MainScaffold extends StatelessWidget {
           : null,
       body: SafeArea(child: body),
       floatingActionButton: floatingActionButton,
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }

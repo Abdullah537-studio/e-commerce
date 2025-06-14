@@ -1,7 +1,7 @@
 import 'package:e_commerce_app/core/constant/app_colors.dart';
 import 'package:e_commerce_app/core/strings/images_strings.dart';
-import 'package:e_commerce_app/core/widgets/main_scaffold.dart';
 import 'package:e_commerce_app/core/widgets/main_text_widget.dart';
+import 'package:e_commerce_app/features/home_page/presentation/widgets/section_header.dart';
 import 'package:e_commerce_app/features/home_page/presentation/widgets/single_category.dart';
 import 'package:e_commerce_app/features/home_page/presentation/widgets/single_top_selling_product.dart';
 import 'package:flutter/material.dart';
@@ -13,91 +13,97 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainScaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircleAvatar(radius: 20.w),
-                  Container(
-                    width: 74.w,
-                    height: 4.h,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
 
-                    decoration: BoxDecoration(
-                      color: AppColors.greyColor,
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        MainTextWidget(text: "Men"),
-                        SvgPicture.asset(ImagesStrings.arrowDownSvg),
-                      ],
-                    ),
-                  ),
+        child: Column(
+          children: [
+            SizedBox(height: 68.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CircleAvatar(
+                  radius: 20.w,
+                  backgroundColor: AppColors.greyColor,
+                ),
+                Container(
+                  width: 74.w,
+                  height: 40.h,
 
-                  CircleAvatar(
-                    radius: 20.w,
-                    backgroundColor: AppColors.primaryColor,
-                    child: SvgPicture.asset(ImagesStrings.cartSvg),
+                  decoration: BoxDecoration(
+                    color: AppColors.greyColor,
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
-                ],
-              ),
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 24.h),
-                padding: EdgeInsets.symmetric(horizontal: 19.w),
-                decoration: BoxDecoration(
-                  color: AppColors.greyColor,
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(24.r),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MainTextWidget(text: "Men"),
+                      SvgPicture.asset(ImagesStrings.arrowDownSvg),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SvgPicture.asset(ImagesStrings.searchSvg),
-                    SizedBox(width: 12.w),
-                    MainTextWidget(text: "Search"),
-                  ],
+
+                CircleAvatar(
+                  radius: 20.w,
+                  backgroundColor: AppColors.primaryColor,
+                  child: SvgPicture.asset(ImagesStrings.cartSvg),
                 ),
+              ],
+            ),
+            Container(
+              width: double.infinity,
+              height: 40.h,
+              margin: EdgeInsets.symmetric(vertical: 24.h),
+              padding: EdgeInsets.symmetric(horizontal: 19.w),
+              decoration: BoxDecoration(
+                color: AppColors.greyColor,
+                borderRadius: BorderRadius.circular(24.r),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  MainTextWidget(
-                    text: "Category",
-                    styleType: TextStyleType.bodyLarge,
-                  ),
-                  MainTextWidget(text: "See All"),
+                  SvgPicture.asset(ImagesStrings.searchSvg),
+                  SizedBox(width: 12.w),
+                  MainTextWidget(text: "Search"),
                 ],
               ),
-              SingleCategory(
-                image: ImagesStrings.imageCategory,
-                text: "Hoodies",
+            ),
+            SectionHeader(title: "Category", ontap: () {}),
+
+            SizedBox(
+              height: 80.h,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 9,
+                itemBuilder: (context, index) {
+                  return SingleCategory(
+                    image: ImagesStrings.imageCategory,
+                    text: "Hoodies",
+                  );
+                },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MainTextWidget(
-                    text: "Top Selling",
-                    styleType: TextStyleType.bodyLarge,
-                  ),
-                  MainTextWidget(text: "See All"),
-                ],
+            ),
+            SizedBox(height: 24.h),
+            SectionHeader(title: "Top Selling", ontap: () {}),
+            //? product
+            SizedBox(
+              height: 367.h,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return SingleTopSellingProduct(
+                    image: ImagesStrings.imageProduct,
+                    text: "Men's Harrington Jacket",
+                    price: 148.00,
+                    onTapFavorite: () {},
+                  );
+                },
               ),
-              SingleTopSellingProduct(
-                image: ImagesStrings.imageProduct,
-                text: "Men's Harrington Jacket",
-                price: 148.00,
-                onTapFavorite: () {},
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

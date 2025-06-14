@@ -10,15 +10,18 @@ class SingleCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 56 / 2.w,
-          backgroundColor: AppColors.greyColor,
-          child: Image.asset(image),
-        ),
-        MainTextWidget(text: text),
-      ],
+    return Padding(
+      padding: EdgeInsets.only(right: 20.w),
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 56 / 2.w,
+            backgroundColor: AppColors.greyColor,
+            child: Image.asset(image),
+          ),
+          MainTextWidget(text: text),
+        ],
+      ),
     );
   }
 }
